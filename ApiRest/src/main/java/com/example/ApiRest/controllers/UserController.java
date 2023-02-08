@@ -57,4 +57,29 @@ public class UserController {
         }
         return new ResponseEntity<Usuario>(usuario,HttpStatus.OK);
     }
+
+    @PutMapping("/usuario/{id}")
+    public ResponseEntity<?> update(@RequestBody Usuario usuario,@PathVariable Long id){
+        Usuario usuarioActual = services.findById(id);
+        Usuario usuarioUpdate=null;
+        Map<String,Object> response = new HashMap<>();
+        if(usuarioActual==null){
+            response.put("mensaje","el cliente con id: ".concat(" ").concat("No existe"));
+            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+        }
+        try {
+            usuarioActual.setNombre(usuario.getNombre());
+            usuarioActual.setApellido(usuario.getApellido());
+
+            usuarioUpdate=services.save(usuarioActual);
+
+    }catch(DataAccessException e){
+        response.put("mensaje","Error al realizar el la actualizacion en la base de datos");
+        response.put("error",e.getMessage());
+        return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+        response.put("mensaje","Usuario editado con exito");
+        response.put("usuario",usuarioUpdate);
+      return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+    }
 }
