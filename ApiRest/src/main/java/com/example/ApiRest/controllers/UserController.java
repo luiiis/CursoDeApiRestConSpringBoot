@@ -39,4 +39,22 @@ public class UserController {
         response.put("usuario",usuarioNew);
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
     }
+
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<?> show(@PathVariable Long id){
+        Usuario usuario = null;
+        Map<String,Object> response = new HashMap<>();
+        try{
+            usuario = services.findById(id);
+        }catch(DataAccessException e){
+            response.put("mensaje","Error al realizar el la visualizacion en la base de datos");
+            response.put("error",e.getMessage());
+            return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if(usuario==null){
+            response.put("mensaje","el cliente con id: ".concat(" ").concat("No existe"));
+            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Usuario>(usuario,HttpStatus.OK);
+    }
 }
