@@ -3,9 +3,10 @@ package com.example.ApiRest.services;
 import com.example.ApiRest.models.Usuario;
 import com.example.ApiRest.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class UsuarioServiceImpl implements UsuarioServices{
     @Autowired
     private UserRepository repository;

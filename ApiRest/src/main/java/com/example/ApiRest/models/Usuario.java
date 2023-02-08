@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="clientes")
+@Table(name="Usuarios")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +20,9 @@ public class Usuario {
     private String apellido;
     @Temporal(TemporalType.DATE)
     private Date CreatedAt;
+
+    @PrePersist
+    public void prePresist(){
+        CreatedAt = new Date();
+    }
 }
