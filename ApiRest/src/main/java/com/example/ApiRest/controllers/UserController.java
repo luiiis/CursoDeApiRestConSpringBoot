@@ -82,4 +82,18 @@ public class UserController {
         response.put("usuario",usuarioUpdate);
       return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/usuario/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id){
+        Map<String,Object> response = new HashMap<>();
+        try{
+            services.delete(id);
+        }catch(DataAccessException e){
+            response.put("mensaje","Error al realizar el la eliminacion en la base de datos");
+            response.put("error",e.getMessage());
+            return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("mensaje","El usuario se elimino exitosamente");
+        return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+    }
 }
